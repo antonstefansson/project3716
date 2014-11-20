@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 
 public class GroupCreator {
+	/*
+	 * Creates groups based on given criteria
+	 */
 	public ArrayList<ArrayList<Student>> createGroups( int size, ArrayList<Student> studentList ) {
 		ArrayList<ArrayList<Student>> listofgroups = new ArrayList<ArrayList<Student>>();
 		int numGroups = studentList.size()/size;

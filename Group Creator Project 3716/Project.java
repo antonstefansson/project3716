@@ -1,5 +1,8 @@
 
 public class Project {
+	/*
+	 * Project class for group criteria
+	 */
 	int size = 0;
 	
 	public int getSize() {

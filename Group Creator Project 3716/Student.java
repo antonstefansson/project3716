@@ -1,5 +1,8 @@
 
 public class Student {
+	/*
+	 * Holds information for one student
+	 */
 	String StudentNo = "";
 	String StudentName = "";
 	String StudentEmail = "";

@@ -1,49 +1,43 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.PrintWriter;
-import java.io.File;
 import java.util.ArrayList;
 
 public class SystemManager {
-	static ArrayList<Student> studentList = new ArrayList<Student>();
+	/**
+	 * Delegates tasks to other classes in the system
+	 */
+	ArrayList<Student> studentList;
+	ArrayList<ArrayList<Student>> listofgroups;
+	GroupCreator gc;
+	Storage st;
+	Instructor inst;
+	Project proj;
 
-	public static void main(String[] args) {
-		try {
-			BufferedReader br = new BufferedReader( new FileReader( "ClassList.txt" ) );
-			String temp;
-			while( ( temp = br.readLine() ) != null ) {
-				studentList.add( new Student( temp, br.readLine(), br.readLine() ) );
-				temp = br.readLine();
-			}
-		}
-		catch( Exception e ) {
-			System.out.println("Class List file \"ClassList.txt\" does not exist");
-			
-		}
-		Project proj = new Project();
-		Admin ad = new Admin( proj );
-		GroupCreator gc = new GroupCreator();
-		ArrayList<ArrayList<Student>> listofgroups = gc.createGroups( proj.getSize(), studentList);
-		try {
-			PrintWriter pw = new PrintWriter( new File( "CompletedGroups.txt" ) );
-			for( ArrayList<Student> s : listofgroups ) {
-				for( Student stu : s ) {
-					pw.println( stu.getStudentNo() + "\t\t" + stu.getStudentName() );
-				}
-				pw.println(" ");
-			}
-			pw.close();
-		}
-		catch( Exception e ) {
-			System.out.println( "Error creating group file" );
-		}
-		for( ArrayList<Student> s : listofgroups ) {
-			for( Student stu : s ) {
-				System.out.println( stu.getStudentNo() + "\t\t" + stu.getStudentName() );
-			}
-			System.out.println(" ");
-		}
-
+	public SystemManager() {
+		studentList = new ArrayList<Student>();
+		listofgroups = new ArrayList<ArrayList<Student>>();
+		gc = new GroupCreator();
+		st = new StorageImplementation();
+	}
+	
+	public void readClassList( String CourseNo ) {
+		studentList = st.getClassList( CourseNo );
+	}
+	
+	public void createProject() {
+		Instructor inst = new Instructor();
+		proj = inst.createNewProject();
+	}
+	
+	public void createGroups( int size ) {
+		proj.setSize( size );
+		listofgroups = gc.createGroups( proj.getSize(), studentList);
+	}
+	
+	public ArrayList<ArrayList<Student>> getGroups() {
+		return listofgroups;
+	}
+	
+	public void storeGroups() {
+		st.storeGroups( listofgroups );
 	}
 
 }
