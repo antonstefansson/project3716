@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class GroupCreator {
 	/*
@@ -34,5 +36,27 @@ public class GroupCreator {
 			group ++;
 		}
 		return listofgroups;
+	}
+	
+	public ArrayList<ArrayList<Student>> createGroupsGPA( int size, ArrayList<Student> studentList ) {
+		ArrayList<Student> tempStudentList = new ArrayList<Student>( studentList );
+		ArrayList<Student> sortStudentList = new ArrayList<Student>();
+		Collections.sort( tempStudentList, new Comparator<Student>() {
+			@Override public int compare( Student s1, Student s2 ) {
+				return (int) (s1.getStudentGPA()*10.0 ) - (int) ( s2.getStudentGPA()*10.0 );
+			}
+		} );
+		boolean start = true;
+		while( tempStudentList.size() != 0 ) {
+			if( start ) {
+				sortStudentList.add( tempStudentList.remove( 0 ) );
+				start = false;
+			}
+			else {
+				sortStudentList.add( tempStudentList.remove( tempStudentList.size() - 1 ) );
+				start = true;
+			}
+		}
+		return createGroups( size, sortStudentList );
 	}
 }

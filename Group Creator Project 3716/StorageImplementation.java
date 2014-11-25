@@ -19,6 +19,7 @@ public class StorageImplementation implements Storage {
 				studentList.add( new Student( temp, br.readLine(), br.readLine() ) );
 				temp = br.readLine();
 			}
+			br.close();
 		}
 		catch( Exception e ) {
 			return new ArrayList<Student>();
@@ -39,6 +40,25 @@ public class StorageImplementation implements Storage {
 		}
 		catch( Exception e ) {
 			System.out.println( "Error creating group file" );
+		}
+	}
+	
+	public void getGPAs( ArrayList<Student> studentList ) {
+		try {
+			BufferedReader br = new BufferedReader( new FileReader( "StudentGPAs.txt" ) );
+			String temp;
+			while( ( temp = br.readLine() ) != null ) {
+				for( Student s : studentList ) {
+					if( s.getStudentNo().equals( temp ) ) {
+						s.setGPA( Double.parseDouble( br.readLine() ) );
+					}
+				}
+				temp = br.readLine();
+			}
+			br.close();
+		}
+		catch( Exception e ) {
+			return;
 		}
 	}
 }

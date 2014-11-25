@@ -22,6 +22,14 @@ public class SystemManager {
 		studentList = st.getClassList( CourseNo );
 	}
 	
+	public void readGPAs() {
+		st.getGPAs( studentList );
+	}
+	
+	public int getNumStudents() {
+		return studentList.size();
+	}
+	
 	public void createProject() {
 		Instructor inst = new Instructor();
 		proj = inst.createNewProject();
@@ -30,6 +38,11 @@ public class SystemManager {
 	public void createGroups( int size ) {
 		proj.setSize( size );
 		listofgroups = gc.createGroups( proj.getSize(), studentList);
+	}
+	
+	public void createGroupsGPA( int size ) {
+		proj.setSize( size );
+		listofgroups = gc.createGroupsGPA( proj.getSize(), studentList);
 	}
 	
 	public ArrayList<ArrayList<Student>> getGroups() {

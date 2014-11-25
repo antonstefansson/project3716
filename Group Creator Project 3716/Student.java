@@ -6,6 +6,7 @@ public class Student {
 	String StudentNo = "";
 	String StudentName = "";
 	String StudentEmail = "";
+	double gpa = 0;
 	public Student( String SNo, String SName, String SEmail ) {
 		StudentNo = SNo;
 		StudentName = SName;
@@ -19,5 +20,11 @@ public class Student {
 	}
 	public String getStudentEmail() {
 		return StudentEmail;
+	}
+	public void setGPA( double newgpa ) {
+		gpa = newgpa;
+	}
+	public double getStudentGPA() {
+		return gpa;
 	}
 }

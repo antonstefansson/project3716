@@ -10,4 +10,5 @@ public interface Storage {
 	
 	void storeGroups( ArrayList<ArrayList<Student>> listofgroups );
 	
+	void getGPAs( ArrayList<Student> studentList );
 }
