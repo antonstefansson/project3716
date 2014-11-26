@@ -30,6 +30,10 @@ public class SystemManager {
 		return studentList.size();
 	}
 	
+	public ArrayList<Student> getStudentList() {
+		return studentList;
+	}
+	
 	public void createProject() {
 		Instructor inst = new Instructor();
 		proj = inst.createNewProject();

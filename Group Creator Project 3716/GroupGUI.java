@@ -19,38 +19,28 @@ public class GroupGUI {
 	 * GUI implementation that interacts with the SystemManager class
 	 */
 	public static void main( String args[] ) {
-		JFrame frame = new JFrame("Group Creator");
+		final JFrame frame = new JFrame("Group Creator");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize( 400, 650 );
 		frame.setLocationRelativeTo(null);
 		
-		/*
-		 * testing code
-		 *
-		JPanel test = new JPanel( new BorderLayout() );
-		JTextArea jta = new JTextArea();
-		JScrollPane scroll = new JScrollPane( jta );
+		final JPanel loginpane = new JPanel( new BorderLayout() );
+		JPanel login = new JPanel();
+		JLabel userl = new JLabel("Username:");
+		JLabel passl = new JLabel("Password:");
+		final JTextField user = new JTextField( 10 );
+		final JTextField pass = new JTextField( 10 );
+		JButton logbutton = new JButton( "Login" );
+		login.add( userl );
+		login.add( user );
+		login.add( passl );
+		login.add( pass );
+		loginpane.add( login, BorderLayout.CENTER );
+		loginpane.add( logbutton, BorderLayout.SOUTH );
 		
-		SystemManager sm = new SystemManager();
-		sm.readClassList( "String!" );
-		sm.readGPAs();
 		
-		ArrayList<Student> stus = sm.studentList;
-		for( Student s : stus ) {
-			jta.append( s.getStudentNo() + "\n" );
-			jta.append( s.getStudentName() + "\n" );
-			jta.append( s.getStudentEmail() + "\n" );
-			jta.append( s.getStudentGPA () + "\n\n" );
-		}
-		
-		test.add( scroll );
-		frame.add( test );
-		frame.setVisible( true );
-		*/
-		
-		JPanel panel = new JPanel( new BorderLayout() );
+		final JPanel profPanel = new JPanel( new BorderLayout() );
 		JPanel upper = new JPanel( new GridLayout( 3, 2 ) );
-		
 		JLabel jl1 = new JLabel("Course Number");
 		JLabel jl2 = new JLabel("Group Size");
 		JLabel jl3 = new JLabel("Use Student GPAs?");
@@ -60,16 +50,66 @@ public class GroupGUI {
 		final JTextArea jta = new JTextArea();
 		JScrollPane scroll = new JScrollPane( jta );
 		final JButton button = new JButton( "Submit" );
-		
 		upper.add( jl1 );
 		upper.add( jtf1 );
 		upper.add( jl2 );
 		upper.add( jtf2 );
 		upper.add( jl3 );
 		upper.add( jcb );
-		panel.add( upper, BorderLayout.NORTH );
-		panel.add( scroll, BorderLayout.CENTER );
-		panel.add( button, BorderLayout.SOUTH );
+		profPanel.add( upper, BorderLayout.NORTH );
+		profPanel.add( scroll, BorderLayout.CENTER );
+		profPanel.add( button, BorderLayout.SOUTH );
+		
+		logbutton.addActionListener( new ActionListener() {
+			public void actionPerformed( ActionEvent evt ) {
+				if( user.getText().equals("Professor") ) {
+					frame.remove( loginpane );
+					frame.add( profPanel );
+					frame.revalidate();
+					frame.repaint();
+				}
+				else {
+					SystemManager sm = new SystemManager();
+					sm.readClassList( "CourseNo" );
+					ArrayList<Student> students = sm.getStudentList();
+					String username = user.getText();
+					boolean valid = false;
+					Student s_user = new Student( "", "", "" );
+					for( Student s : students ) {
+						if( username.equals( s.getStudentNo() ) ) {
+							s_user = s;
+							valid = true;
+						}
+					}
+					if( valid ) {
+						final JPanel studentPanel = new JPanel();
+						JLabel sl1 = new JLabel("Student Email Address:");
+						final Student stu = s_user;
+						final JTextField sjtf1 = new JTextField( stu.getStudentEmail(), 20 );
+						JButton sb1 = new JButton( "Update" );
+						JButton sb2 = new JButton( "Print" );
+						studentPanel.add( sl1 );
+						studentPanel.add( sjtf1 );
+						studentPanel.add( sb1 );
+						studentPanel.add( sb2 );
+						sb1.addActionListener( new ActionListener() {
+							public void actionPerformed( ActionEvent evt ) {
+								stu.setEmail( sjtf1.getText() );
+							}
+						});
+						sb2.addActionListener( new ActionListener() {
+							public void actionPerformed( ActionEvent evt ) {
+								System.out.println( stu.getStudentEmail() );
+							}
+						});
+						frame.remove( loginpane );
+						frame.add( studentPanel );
+						frame.revalidate();
+						frame.repaint();
+					}
+				}
+			}
+		});
 
 		jtf1.addActionListener( new ActionListener() {
 			public void actionPerformed( ActionEvent evt ) {
@@ -133,7 +173,7 @@ public class GroupGUI {
 				}
 			}
 		});
-		frame.add( panel );
+		frame.add( loginpane );
 		frame.setResizable( false );
 		frame.setVisible( true );
 		

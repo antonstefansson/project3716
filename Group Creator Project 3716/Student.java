@@ -27,4 +27,7 @@ public class Student {
 	public double getStudentGPA() {
 		return gpa;
 	}
+	public void setEmail( String newemail ) {
+		StudentEmail = newemail;
+	}
 }
