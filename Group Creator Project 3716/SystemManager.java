@@ -53,6 +53,10 @@ public class SystemManager {
 		return listofgroups;
 	}
 	
+	public void updateGroups( ArrayList<ArrayList<Student>> newgroups ) {
+		listofgroups = newgroups;
+	}
+	
 	public void storeGroups() {
 		st.storeGroups( listofgroups );
 	}

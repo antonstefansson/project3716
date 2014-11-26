@@ -8,8 +8,11 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JCheckBox;
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButton;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -30,13 +33,13 @@ public class GroupGUI {
 		JLabel passl = new JLabel("Password:");
 		final JTextField user = new JTextField( 10 );
 		final JTextField pass = new JTextField( 10 );
-		JButton logbutton = new JButton( "Login" );
+		final JButton logButton = new JButton( "Login" );
 		login.add( userl );
 		login.add( user );
 		login.add( passl );
 		login.add( pass );
 		loginpane.add( login, BorderLayout.CENTER );
-		loginpane.add( logbutton, BorderLayout.SOUTH );
+		loginpane.add( logButton, BorderLayout.SOUTH );
 		
 		
 		final JPanel profPanel = new JPanel( new BorderLayout() );
@@ -49,7 +52,9 @@ public class GroupGUI {
 		final JCheckBox jcb = new JCheckBox();
 		final JTextArea jta = new JTextArea();
 		JScrollPane scroll = new JScrollPane( jta );
-		final JButton button = new JButton( "Submit" );
+		final JButton createButton = new JButton( "Create Groups" );
+		final JButton editButton = new JButton( "Edit Groups" );
+		final JButton submitButton = new JButton( "Submit Groups" );
 		upper.add( jl1 );
 		upper.add( jtf1 );
 		upper.add( jl2 );
@@ -58,9 +63,9 @@ public class GroupGUI {
 		upper.add( jcb );
 		profPanel.add( upper, BorderLayout.NORTH );
 		profPanel.add( scroll, BorderLayout.CENTER );
-		profPanel.add( button, BorderLayout.SOUTH );
+		profPanel.add( createButton, BorderLayout.SOUTH );
 		
-		logbutton.addActionListener( new ActionListener() {
+		logButton.addActionListener( new ActionListener() {
 			public void actionPerformed( ActionEvent evt ) {
 				if( user.getText().equals("Professor") ) {
 					frame.remove( loginpane );
@@ -111,19 +116,31 @@ public class GroupGUI {
 			}
 		});
 
+		user.addActionListener( new ActionListener() {
+			public void actionPerformed( ActionEvent evt ) {
+				logButton.doClick();
+			}
+		});
+		
+		pass.addActionListener( new ActionListener() {
+			public void actionPerformed( ActionEvent evt ) {
+				logButton.doClick();
+			}
+		});
+		
 		jtf1.addActionListener( new ActionListener() {
 			public void actionPerformed( ActionEvent evt ) {
-				button.doClick();
+				createButton.doClick();
 			}
 		});
 		
 		jtf2.addActionListener( new ActionListener() {
 			public void actionPerformed( ActionEvent evt ) {
-				button.doClick();
+				createButton.doClick();
 			}
 		});
 		
-		button.addActionListener( new ActionListener() {
+		createButton.addActionListener( new ActionListener() {
 			public void actionPerformed( ActionEvent evt ) {
 				String courseNo = jtf1.getText();
 				boolean sizeint = true;
@@ -137,14 +154,13 @@ public class GroupGUI {
 				if( sizeint ) {
 					jta.setText( "" );
 					ArrayList<ArrayList<Student>> listofgroups;
-					SystemManager sm = new SystemManager();
+					final SystemManager sm = new SystemManager();
 					sm.readClassList( courseNo );
 					if( jcb.isSelected() ) {
 						sm.readGPAs();
 					}
 					int numStudents = sm.getNumStudents();
 					if( numStudents >= size ) {
-						jta.append( "\nCompleted Groups are stored in the file \"CompletedGroups.txt\"\n\n" );
 						sm.createProject();
 						if( jcb.isSelected() ) {
 							sm.createGroupsGPA( size );
@@ -152,7 +168,83 @@ public class GroupGUI {
 						else {
 							sm.createGroups( size );
 						}
-						sm.storeGroups();
+						profPanel.remove( createButton );
+						JPanel subPanel = new JPanel( new GridLayout( 1, 2 ) );
+						subPanel.add( editButton );
+						subPanel.add( submitButton );
+						editButton.addActionListener( new ActionListener() {
+							public void actionPerformed( ActionEvent evt ) {
+								ArrayList<ArrayList<Student>> templist = sm.getGroups();
+								int numStu = sm.getNumStudents();
+								ArrayList<Student> tempstu = new ArrayList<Student>();
+								final JPanel updatePanel = new JPanel( new BorderLayout() );
+								JPanel namePanel = new JPanel( new GridLayout( numStu, 1 ) );
+								JPanel editPanel = new JPanel( new GridLayout( numStu, templist.size() ) );
+								//JPanel editPanel = new JPanel( new GridLayout( numStu, templist.size() + 1 ) );
+								ArrayList<ButtonGroup> arbg = new ArrayList<ButtonGroup>();
+								for( int i = 0; i < templist.size(); i++ ) {
+									for( Student stu : templist.get( i ) ) {
+										tempstu.add( stu );
+										namePanel.add( new JLabel( stu.getStudentName() ) );
+										//editPanel.add( new JLabel( stu.getStudentName() ) );
+										ButtonGroup bg = new ButtonGroup();
+										for( int j = 1; j <= templist.size(); j++ ) {
+											JRadioButton jrb = new JRadioButton( "" + j + "" );
+											jrb.setActionCommand( "" + j + "" );
+											if( i + 1 == j ) {
+												jrb.setSelected( true );
+											}
+											bg.add( jrb );
+											editPanel.add( jrb );
+										}
+										arbg.add( bg );
+									}
+								}
+								final ArrayList<Student> stuList = tempstu;
+								final ArrayList<ButtonGroup> bglist = arbg;
+								final int numGroups = templist.size();
+								JButton updateButton = new JButton( "Update Groups" );
+								updateButton.addActionListener( new ActionListener() {
+									public void actionPerformed( ActionEvent evt ) {
+										ArrayList<ArrayList<Student>> newgroups = new ArrayList<ArrayList<Student>>();
+										for( int n = 0; n < numGroups; n++ ) {
+											newgroups.add( new ArrayList<Student>() );
+										}
+										for( int k = 0; k < stuList.size(); k++ ) {
+											newgroups.get( Integer.parseInt( (bglist.get( k ).getSelection()).getActionCommand() ) - 1 ).add( stuList.get( k ) );
+										}
+										sm.updateGroups( newgroups );
+										jta.setText( "" );
+										for( ArrayList<Student> s : newgroups ) {
+											for( Student stu : s ) {
+												jta.append( stu.getStudentNo() + "\t\t" + stu.getStudentGPA() + "\t" + stu.getStudentName() + "\n" );
+											}
+											jta.append("\n");
+										}
+										frame.remove( updatePanel );
+										frame.add( profPanel );
+										frame.revalidate();
+										frame.repaint();
+									}
+								});
+								updatePanel.add( namePanel, BorderLayout.WEST );
+								updatePanel.add( editPanel, BorderLayout.CENTER );
+								updatePanel.add( updateButton, BorderLayout.SOUTH );
+								frame.remove( profPanel );
+								frame.add( updatePanel );
+								frame.revalidate();
+								frame.repaint();
+							}
+						});
+						submitButton.addActionListener( new ActionListener() {
+							public void actionPerformed( ActionEvent evt ) {
+								jta.append( "\nCompleted Groups are stored in the file \"CompletedGroups.txt\"\n\n" );
+								sm.storeGroups();
+							}
+						});
+						profPanel.add( subPanel, BorderLayout.SOUTH );
+						frame.revalidate();
+						frame.repaint();
 						listofgroups = sm.getGroups();
 						for( ArrayList<Student> s : listofgroups ) {
 							for( Student stu : s ) {
@@ -174,7 +266,6 @@ public class GroupGUI {
 			}
 		});
 		frame.add( loginpane );
-		frame.setResizable( false );
 		frame.setVisible( true );
 		
 	}
