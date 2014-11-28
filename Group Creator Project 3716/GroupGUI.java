@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
+import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.JCheckBox;
 import javax.swing.ButtonGroup;
@@ -41,12 +42,14 @@ public class GroupGUI {
 		loginpane.add( login, BorderLayout.CENTER );
 		loginpane.add( logButton, BorderLayout.SOUTH );
 		
+		String[] courseString = {"CS 3716","CS 3715"};
 		
 		final JPanel profPanel = new JPanel( new BorderLayout() );
 		JPanel upper = new JPanel( new GridLayout( 3, 2 ) );
 		JLabel jl1 = new JLabel("Course Number");
 		JLabel jl2 = new JLabel("Group Size");
 		JLabel jl3 = new JLabel("Use Student GPAs?");
+		final JComboBox jcob = new JComboBox(courseString);
 		final JTextField jtf1 = new JTextField( 10 );
 		final JTextField jtf2 = new JTextField( 10 );
 		final JCheckBox jcb = new JCheckBox();
@@ -56,7 +59,8 @@ public class GroupGUI {
 		final JButton editButton = new JButton( "Edit Groups" );
 		final JButton submitButton = new JButton( "Submit Groups" );
 		upper.add( jl1 );
-		upper.add( jtf1 );
+		upper.add( jcob );
+		//upper.add( jtf1 );
 		upper.add( jl2 );
 		upper.add( jtf2 );
 		upper.add( jl3 );
