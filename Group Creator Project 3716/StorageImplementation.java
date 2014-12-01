@@ -13,7 +13,7 @@ public class StorageImplementation implements Storage {
 	public ArrayList<Student> getClassList( String CourseNo ) {
 		ArrayList<Student> studentList = new ArrayList<Student>();
 		try {
-			BufferedReader br = new BufferedReader( new FileReader( "ClassList.txt" ) );
+			BufferedReader br = new BufferedReader( new FileReader( "ClassList" + CourseNo +".txt" ) );
 			String temp;
 			while( ( temp = br.readLine() ) != null ) {
 				studentList.add( new Student( temp, br.readLine(), br.readLine() ) );

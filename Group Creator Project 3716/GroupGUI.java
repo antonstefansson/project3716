@@ -42,7 +42,7 @@ public class GroupGUI {
 		loginpane.add( login, BorderLayout.CENTER );
 		loginpane.add( logButton, BorderLayout.SOUTH );
 		
-		String[] courseString = {"CS 3716","CS 3715"};
+		String[] courseString = {"CS3716","CS3715"};
 		
 		final JPanel profPanel = new JPanel( new BorderLayout() );
 		JPanel upper = new JPanel( new GridLayout( 3, 2 ) );
@@ -50,7 +50,7 @@ public class GroupGUI {
 		JLabel jl2 = new JLabel("Group Size");
 		JLabel jl3 = new JLabel("Use Student GPAs?");
 		final JComboBox jcob = new JComboBox(courseString);
-		final JTextField jtf1 = new JTextField( 10 );
+		//final JTextField jtf1 = new JTextField( 10 );
 		final JTextField jtf2 = new JTextField( 10 );
 		final JCheckBox jcb = new JCheckBox();
 		final JTextArea jta = new JTextArea();
@@ -132,11 +132,11 @@ public class GroupGUI {
 			}
 		});
 		
-		jtf1.addActionListener( new ActionListener() {
-			public void actionPerformed( ActionEvent evt ) {
-				createButton.doClick();
-			}
-		});
+		//jcob.addActionListener( new ActionListener() {
+		//	public void actionPerformed( ActionEvent evt ) {
+		//		createButton.doClick();
+		//	}
+		//});
 		
 		jtf2.addActionListener( new ActionListener() {
 			public void actionPerformed( ActionEvent evt ) {
@@ -146,7 +146,7 @@ public class GroupGUI {
 		
 		createButton.addActionListener( new ActionListener() {
 			public void actionPerformed( ActionEvent evt ) {
-				String courseNo = jtf1.getText();
+				String courseNo = (String) jcob.getSelectedItem();
 				boolean sizeint = true;
 				int size = 0;
 				try {
