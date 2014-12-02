@@ -60,6 +60,7 @@ public class GroupGUI {
 		
 		final JPanel profPanel = new JPanel( new BorderLayout() );
 		JPanel upper = new JPanel( new GridLayout( 5, 2 ) );
+		JPanel selClass = new JPanel( new GridLayout( 1, 2 ) );
 		JLabel jl1 = new JLabel("Course Number");
 		JLabel jl2 = new JLabel("Group Size");
 		JLabel jl3 = new JLabel("Use Student GPAs?");
@@ -70,6 +71,7 @@ public class GroupGUI {
 		final JCheckBox jcb2 = new JCheckBox();
 		final JTextArea jta = new JTextArea();
 		JScrollPane scroll = new JScrollPane( jta );
+		JButton classButton = new JButton( "Set Class" );
 		final JButton backButton = new JButton( "<= Back to Login" );
 		final JButton selfEvalButton = new JButton( "Setup Self Eval");
 		final JButton createButton = new JButton( "Create Groups" );
@@ -78,7 +80,9 @@ public class GroupGUI {
 		upper.add( backButton );
 		upper.add( selfEvalButton );
 		upper.add( jl1 );
-		upper.add( jcob );
+		selClass.add( jcob );
+		selClass.add( classButton );
+		upper.add( selClass );
 		upper.add( jl2 );
 		upper.add( jtf2 );
 		upper.add( jl3 );
@@ -91,6 +95,19 @@ public class GroupGUI {
 		
 		final SystemManager sm = new SystemManager();
 		sm.readClassList( (String) jcob.getSelectedItem() );
+		
+		classButton.addActionListener( new ActionListener() {
+			public void actionPerformed( ActionEvent evt ) {
+				sm.readClassList( (String) jcob.getSelectedItem() );
+				BorderLayout layout = (BorderLayout) profPanel.getLayout();
+				profPanel.remove( layout.getLayoutComponent( BorderLayout.SOUTH ) );
+				createButton.setEnabled( true );
+				profPanel.add( createButton, BorderLayout.SOUTH );
+				jta.setText( "" );
+				frame.revalidate();
+				frame.repaint();
+			}
+		});
 		
 		jcb.addActionListener( new ActionListener() {
 			public void actionPerformed( ActionEvent evt ) {
