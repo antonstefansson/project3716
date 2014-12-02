@@ -49,6 +49,16 @@ public class SystemManager {
 		listofgroups = gc.createGroupsGPA( proj.getSize(), studentList);
 	}
 	
+	public void createGroupsSelfEvalGPA( int size ) {
+		proj.setSize( size );
+		listofgroups = gc.createGroupsSelfEvalGPA( proj.getSize(), studentList);
+	}
+	
+	public void createGroupsSelfEval( int size ) {
+		proj.setSize( size );
+		listofgroups = gc.createGroupsSelfEval( proj.getSize(), studentList);
+	}
+	
 	public ArrayList<ArrayList<Student>> getGroups() {
 		return listofgroups;
 	}

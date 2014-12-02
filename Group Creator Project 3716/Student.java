@@ -7,6 +7,8 @@ public class Student {
 	String StudentName = "";
 	String StudentEmail = "";
 	double gpa = 0;
+	int[] selfEvalValues = new int[10];
+	double selfEvalScore = 0.0;
 	public Student( String SNo, String SName, String SEmail ) {
 		StudentNo = SNo;
 		StudentName = SName;
@@ -29,5 +31,17 @@ public class Student {
 	}
 	public void setEmail( String newemail ) {
 		StudentEmail = newemail;
+	}
+	public int[] getSelfEvalValues() {
+		return selfEvalValues;
+	}
+	public void setSelfEvalValues( int[] newScores ) {
+		selfEvalValues = newScores;
+	}
+	public double getSelfEvalScore() {
+		return selfEvalScore;
+	}
+	public void setSelfEvalScore( double newScore ) {
+		selfEvalScore = newScore;
 	}
 }

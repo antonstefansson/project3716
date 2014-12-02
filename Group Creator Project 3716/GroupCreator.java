@@ -59,4 +59,66 @@ public class GroupCreator {
 		}
 		return createGroups( size, sortStudentList );
 	}
+	
+	public ArrayList<ArrayList<Student>> createGroupsSelfEval( int size, ArrayList<Student> studentList ) {
+		for( Student stu : studentList ) {
+			int[] values = stu.getSelfEvalValues();
+			double score = 0.0;
+			for( int i = 0; i < 10; i++ ) {
+				score = score + values[i];
+			}
+			score = score/10;
+			stu.setSelfEvalScore( score );
+		}
+		ArrayList<Student> tempStudentList = new ArrayList<Student>( studentList );
+		ArrayList<Student> sortStudentList = new ArrayList<Student>();
+		Collections.sort( tempStudentList, new Comparator<Student>() {
+			@Override public int compare( Student s1, Student s2 ) {
+				return (int) (s1.getSelfEvalScore()*10.0 ) - (int) ( s2.getSelfEvalScore()*10.0 );
+			}
+		} );
+		boolean start = true;
+		while( tempStudentList.size() != 0 ) {
+			if( start ) {
+				sortStudentList.add( tempStudentList.remove( 0 ) );
+				start = false;
+			}
+			else {
+				sortStudentList.add( tempStudentList.remove( tempStudentList.size() - 1 ) );
+				start = true;
+			}
+		}
+		return createGroups( size, sortStudentList );
+	}
+	
+	public ArrayList<ArrayList<Student>> createGroupsSelfEvalGPA( int size, ArrayList<Student> studentList ) {
+		for( Student stu : studentList ) {
+			int[] values = stu.getSelfEvalValues();
+			double score = 0.0;
+			for( int i = 0; i < 10; i++ ) {
+				score = score + values[i];
+			}
+			score = score/10;
+			stu.setSelfEvalScore( score );
+		}
+		ArrayList<Student> tempStudentList = new ArrayList<Student>( studentList );
+		ArrayList<Student> sortStudentList = new ArrayList<Student>();
+		Collections.sort( tempStudentList, new Comparator<Student>() {
+			@Override public int compare( Student s1, Student s2 ) {
+				return (int) ( s1.getStudentGPA()*s1.getSelfEvalScore()*10.0 ) - (int) ( s1.getStudentGPA()*s2.getSelfEvalScore()*10.0 );
+			}
+		} );
+		boolean start = true;
+		while( tempStudentList.size() != 0 ) {
+			if( start ) {
+				sortStudentList.add( tempStudentList.remove( 0 ) );
+				start = false;
+			}
+			else {
+				sortStudentList.add( tempStudentList.remove( tempStudentList.size() - 1 ) );
+				start = true;
+			}
+		}
+		return createGroups( size, sortStudentList );
+	}
 }
