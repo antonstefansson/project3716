@@ -64,7 +64,6 @@ public class GroupGUI {
 		JLabel jl3 = new JLabel("Use Student GPAs?");
 		JLabel jl4 = new JLabel("Use Self Evaluation?");
 		final JComboBox jcob = new JComboBox(courseString);
-		//final JTextField jtf1 = new JTextField( 10 );
 		final JTextField jtf2 = new JTextField( 10 );
 		final JCheckBox jcb = new JCheckBox();
 		final JCheckBox jcb2 = new JCheckBox();
@@ -79,7 +78,6 @@ public class GroupGUI {
 		upper.add( selfEvalButton );
 		upper.add( jl1 );
 		upper.add( jcob );
-		//upper.add( jtf1 );
 		upper.add( jl2 );
 		upper.add( jtf2 );
 		upper.add( jl3 );
@@ -268,12 +266,6 @@ public class GroupGUI {
 			}
 		});
 		
-		//jcob.addActionListener( new ActionListener() {
-		//	public void actionPerformed( ActionEvent evt ) {
-		//		createButton.doClick();
-		//	}
-		//});
-		
 		jtf2.addActionListener( new ActionListener() {
 			public void actionPerformed( ActionEvent evt ) {
 				createButton.doClick();
@@ -392,13 +384,11 @@ public class GroupGUI {
 				final JPanel updatePanel = new JPanel( new BorderLayout() );
 				JPanel namePanel = new JPanel( new GridLayout( numStu, 1 ) );
 				JPanel editPanel = new JPanel( new GridLayout( numStu, templist.size() ) );
-				//JPanel editPanel = new JPanel( new GridLayout( numStu, templist.size() + 1 ) );
 				ArrayList<ButtonGroup> arbg = new ArrayList<ButtonGroup>();
 				for( int i = 0; i < templist.size(); i++ ) {
 					for( Student stu : templist.get( i ) ) {
 						tempstu.add( stu );
 						namePanel.add( new JLabel( stu.getStudentName() ) );
-						//editPanel.add( new JLabel( stu.getStudentName() ) );
 						ButtonGroup bg = new ButtonGroup();
 						for( int j = 1; j <= templist.size(); j++ ) {
 							JRadioButton jrb = new JRadioButton( "" + j + "" );
