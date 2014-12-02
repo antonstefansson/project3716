@@ -12,6 +12,7 @@
 /GroupGUI$5$1$1.class
 /GroupGUI$5$1.class
 /GroupGUI$5$2.class
+<<<<<<< Updated upstream
 /GroupCreator$1.class
 /GroupCreator$2.class
 /GroupCreator$3.class
@@ -24,3 +25,21 @@
 /StorageImplementation.class
 /Student.class
 /SystemManager.class
+=======
+/GroupCreator$2.class
+/GroupCreator$3.class
+/GroupGUI$1$3$1.class
+/GroupGUI$1$3.class
+/GroupGUI$7$1.class
+/GroupGUI$7.class
+/GroupGUI$10.class
+/GroupGUI$11$1.class
+/GroupGUI$11.class
+/GroupGUI$3$1.class
+/GroupGUI$3$2.class
+/GroupGUI$3$3$1.class
+/GroupGUI$3$3.class
+/GroupGUI$8.class
+/GroupGUI$9$1.class
+/GroupGUI$9.class
+>>>>>>> Stashed changes
