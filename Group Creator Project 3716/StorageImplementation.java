@@ -27,9 +27,10 @@ public class StorageImplementation implements Storage {
 		return studentList;
 	}
 	
-	public void storeGroups( ArrayList<ArrayList<Student>> listofgroups ) {
+	public void storeGroups( ArrayList<ArrayList<Student>> listofgroups, String CourseNo ) {
 		try {
-			PrintWriter pw = new PrintWriter( new File( "CompletedGroups.txt" ) );
+			PrintWriter pw = new PrintWriter( new File( "CompletedGroups" + CourseNo + ".txt" ) );
+			pw.println( "Finalized Groups for " + CourseNo + "\n\n" );
 			for( ArrayList<Student> s : listofgroups ) {
 				for( Student stu : s ) {
 					pw.println( stu.getStudentNo() + "\t\t" + stu.getStudentName() );

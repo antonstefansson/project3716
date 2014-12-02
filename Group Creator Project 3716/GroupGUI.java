@@ -93,6 +93,30 @@ public class GroupGUI {
 		final SystemManager sm = new SystemManager();
 		sm.readClassList( (String) jcob.getSelectedItem() );
 		
+		jcb.addActionListener( new ActionListener() {
+			public void actionPerformed( ActionEvent evt ) {
+				BorderLayout layout = (BorderLayout) profPanel.getLayout();
+				profPanel.remove( layout.getLayoutComponent( BorderLayout.SOUTH ) );
+				createButton.setEnabled( true );
+				profPanel.add( createButton, BorderLayout.SOUTH );
+				jta.setText( "" );
+				frame.revalidate();
+				frame.repaint();
+			}
+		});
+		
+		jcb2.addActionListener( new ActionListener() {
+			public void actionPerformed( ActionEvent evt ) {
+				BorderLayout layout = (BorderLayout) profPanel.getLayout();
+				profPanel.remove( layout.getLayoutComponent( BorderLayout.SOUTH ) );
+				createButton.setEnabled( true );
+				profPanel.add( createButton, BorderLayout.SOUTH );
+				jta.setText( "" );
+				frame.revalidate();
+				frame.repaint();
+			}
+		});
+		
 		logButton.addActionListener( new ActionListener() {
 			public void actionPerformed( ActionEvent evt ) {
 				if( user.getText().equals("Professor") ) {
@@ -157,6 +181,7 @@ public class GroupGUI {
 									final JTextField[] jtfas = new JTextField[10];
 									for( int i = 0; i < 10; i++ ) {
 										jtfas[i] = new JTextField();
+										jtfas[i].setText( "0" );
 									}
 									final JPanel blank = new JPanel();
 									final JButton submitEval = new JButton( "Submit" );
@@ -189,7 +214,7 @@ public class GroupGUI {
 											for( int i = 0; i < 10; i++ ) {
 												try {
 													ans[i] = Integer.parseInt( jtfas[i].getText() );
-													if( ans[i] > 10 || ans[i] < 1 ) {
+													if( ans[i] > 10 || ans[i] < 0 ) {
 														throw new Exception();
 													}
 												}
@@ -301,93 +326,7 @@ public class GroupGUI {
 						JPanel subPanel = new JPanel( new GridLayout( 1, 2 ) );
 						subPanel.add( editButton );
 						subPanel.add( submitButton );
-						editButton.addActionListener( new ActionListener() {
-							public void actionPerformed( ActionEvent evt ) {
-								ArrayList<ArrayList<Student>> templist = sm.getGroups();
-								int numStu = sm.getNumStudents();
-								ArrayList<Student> tempstu = new ArrayList<Student>();
-								final JPanel updatePanel = new JPanel( new BorderLayout() );
-								JPanel namePanel = new JPanel( new GridLayout( numStu, 1 ) );
-								JPanel editPanel = new JPanel( new GridLayout( numStu, templist.size() ) );
-								//JPanel editPanel = new JPanel( new GridLayout( numStu, templist.size() + 1 ) );
-								ArrayList<ButtonGroup> arbg = new ArrayList<ButtonGroup>();
-								for( int i = 0; i < templist.size(); i++ ) {
-									for( Student stu : templist.get( i ) ) {
-										tempstu.add( stu );
-										namePanel.add( new JLabel( stu.getStudentName() ) );
-										//editPanel.add( new JLabel( stu.getStudentName() ) );
-										ButtonGroup bg = new ButtonGroup();
-										for( int j = 1; j <= templist.size(); j++ ) {
-											JRadioButton jrb = new JRadioButton( "" + j + "" );
-											jrb.setActionCommand( "" + j + "" );
-											if( i + 1 == j ) {
-												jrb.setSelected( true );
-											}
-											bg.add( jrb );
-											editPanel.add( jrb );
-										}
-										arbg.add( bg );
-									}
-								}
-								final ArrayList<Student> stuList = tempstu;
-								final ArrayList<ButtonGroup> bglist = arbg;
-								final int numGroups = templist.size();
-								JButton updateButton = new JButton( "Update Groups" );
-								updateButton.addActionListener( new ActionListener() {
-									public void actionPerformed( ActionEvent evt ) {
-										ArrayList<ArrayList<Student>> newgroups = new ArrayList<ArrayList<Student>>();
-										for( int n = 0; n < numGroups; n++ ) {
-											newgroups.add( new ArrayList<Student>() );
-										}
-										for( int k = 0; k < stuList.size(); k++ ) {
-											newgroups.get( Integer.parseInt( (bglist.get( k ).getSelection()).getActionCommand() ) - 1 ).add( stuList.get( k ) );
-										}
-										sm.updateGroups( newgroups );
-										jta.setText( "" );
-										for( ArrayList<Student> s : newgroups ) {
-											if( jcb.isSelected() && jcb2.isSelected() ) {
-												for( Student stu : s ) {
-													jta.append( stu.getStudentNo() + "\t\t" + stu.getStudentGPA() + "\t" + stu.getSelfEvalScore() + "\t" + stu.getStudentName() + "\n" );
-												}
-											}
-											else if( jcb.isSelected() && !jcb2.isSelected() ) {
-												for( Student stu : s ) {
-													jta.append( stu.getStudentNo() + "\t\t" + stu.getStudentGPA() + "\t" + stu.getStudentName() + "\n" );
-												}
-											}
-											else if( !jcb.isSelected() && jcb2.isSelected() ) {
-												for( Student stu : s ) {
-													jta.append( stu.getStudentNo() + "\t\t" + stu.getSelfEvalScore() + "\t" + stu.getStudentName() + "\n" );
-												}
-											}
-											else {
-												for( Student stu : s ) {
-													jta.append( stu.getStudentNo() + "\t\t" + stu.getStudentName() + "\n" );
-												}
-											}
-											jta.append("\n");
-										}
-										frame.remove( updatePanel );
-										frame.add( profPanel );
-										frame.revalidate();
-										frame.repaint();
-									}
-								});
-								updatePanel.add( namePanel, BorderLayout.WEST );
-								updatePanel.add( editPanel, BorderLayout.CENTER );
-								updatePanel.add( updateButton, BorderLayout.SOUTH );
-								frame.remove( profPanel );
-								frame.add( updatePanel );
-								frame.revalidate();
-								frame.repaint();
-							}
-						});
-						submitButton.addActionListener( new ActionListener() {
-							public void actionPerformed( ActionEvent evt ) {
-								jta.append( "\nCompleted Groups are stored in the file \"CompletedGroups.txt\"\n\n" );
-								sm.storeGroups();
-							}
-						});
+
 						profPanel.add( subPanel, BorderLayout.SOUTH );
 						frame.revalidate();
 						frame.repaint();
@@ -442,6 +381,95 @@ public class GroupGUI {
 				frame.add( loginpane );
 				frame.revalidate();
 				frame.repaint();
+			}
+		});
+		
+		editButton.addActionListener( new ActionListener() {
+			public void actionPerformed( ActionEvent evt ) {
+				ArrayList<ArrayList<Student>> templist = sm.getGroups();
+				int numStu = sm.getNumStudents();
+				ArrayList<Student> tempstu = new ArrayList<Student>();
+				final JPanel updatePanel = new JPanel( new BorderLayout() );
+				JPanel namePanel = new JPanel( new GridLayout( numStu, 1 ) );
+				JPanel editPanel = new JPanel( new GridLayout( numStu, templist.size() ) );
+				//JPanel editPanel = new JPanel( new GridLayout( numStu, templist.size() + 1 ) );
+				ArrayList<ButtonGroup> arbg = new ArrayList<ButtonGroup>();
+				for( int i = 0; i < templist.size(); i++ ) {
+					for( Student stu : templist.get( i ) ) {
+						tempstu.add( stu );
+						namePanel.add( new JLabel( stu.getStudentName() ) );
+						//editPanel.add( new JLabel( stu.getStudentName() ) );
+						ButtonGroup bg = new ButtonGroup();
+						for( int j = 1; j <= templist.size(); j++ ) {
+							JRadioButton jrb = new JRadioButton( "" + j + "" );
+							jrb.setActionCommand( "" + j + "" );
+							if( i + 1 == j ) {
+								jrb.setSelected( true );
+							}
+							bg.add( jrb );
+							editPanel.add( jrb );
+						}
+						arbg.add( bg );
+					}
+				}
+				final ArrayList<Student> stuList = tempstu;
+				final ArrayList<ButtonGroup> bglist = arbg;
+				final int numGroups = templist.size();
+				JButton updateButton = new JButton( "Update Groups" );
+				updateButton.addActionListener( new ActionListener() {
+					public void actionPerformed( ActionEvent evt ) {
+						ArrayList<ArrayList<Student>> newgroups = new ArrayList<ArrayList<Student>>();
+						for( int n = 0; n < numGroups; n++ ) {
+							newgroups.add( new ArrayList<Student>() );
+						}
+						for( int k = 0; k < stuList.size(); k++ ) {
+							newgroups.get( Integer.parseInt( (bglist.get( k ).getSelection()).getActionCommand() ) - 1 ).add( stuList.get( k ) );
+						}
+						sm.updateGroups( newgroups );
+						jta.setText( "" );
+						for( ArrayList<Student> s : newgroups ) {
+							if( jcb.isSelected() && jcb2.isSelected() ) {
+								for( Student stu : s ) {
+									jta.append( stu.getStudentNo() + "\t\t" + stu.getStudentGPA() + "\t" + stu.getSelfEvalScore() + "\t" + stu.getStudentName() + "\n" );
+								}
+							}
+							else if( jcb.isSelected() && !jcb2.isSelected() ) {
+								for( Student stu : s ) {
+									jta.append( stu.getStudentNo() + "\t\t" + stu.getStudentGPA() + "\t" + stu.getStudentName() + "\n" );
+								}
+							}
+							else if( !jcb.isSelected() && jcb2.isSelected() ) {
+								for( Student stu : s ) {
+									jta.append( stu.getStudentNo() + "\t\t" + stu.getSelfEvalScore() + "\t" + stu.getStudentName() + "\n" );
+								}
+							}
+							else {
+								for( Student stu : s ) {
+									jta.append( stu.getStudentNo() + "\t\t" + stu.getStudentName() + "\n" );
+								}
+							}
+							jta.append("\n");
+						}
+						frame.remove( updatePanel );
+						frame.add( profPanel );
+						frame.revalidate();
+						frame.repaint();
+					}
+				});
+				updatePanel.add( namePanel, BorderLayout.WEST );
+				updatePanel.add( editPanel, BorderLayout.CENTER );
+				updatePanel.add( updateButton, BorderLayout.SOUTH );
+				frame.remove( profPanel );
+				frame.add( updatePanel );
+				frame.revalidate();
+				frame.repaint();
+			}
+		});
+		
+		submitButton.addActionListener( new ActionListener() {
+			public void actionPerformed( ActionEvent evt ) {
+				jta.append( "\nCompleted Groups are stored in the file \"CompletedGroups" + (String) jcob.getSelectedItem() + ".txt\"\n\n" );
+				sm.storeGroups( (String) jcob.getSelectedItem() );
 			}
 		});
 		

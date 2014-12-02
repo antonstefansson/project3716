@@ -8,7 +8,7 @@ public interface Storage {
 	
 	ArrayList<Student> getClassList( String CourseNo );
 	
-	void storeGroups( ArrayList<ArrayList<Student>> listofgroups );
+	void storeGroups( ArrayList<ArrayList<Student>> listofgroups, String CourseNo );
 	
 	void getGPAs( ArrayList<Student> studentList );
 }

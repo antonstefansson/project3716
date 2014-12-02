@@ -67,8 +67,8 @@ public class SystemManager {
 		listofgroups = newgroups;
 	}
 	
-	public void storeGroups() {
-		st.storeGroups( listofgroups );
+	public void storeGroups( String CourseNo ) {
+		st.storeGroups( listofgroups, CourseNo );
 	}
 
 }
